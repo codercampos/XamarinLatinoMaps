@@ -20,6 +20,10 @@ namespace XamarinLatinoMaps.Droid
             base.OnCreate(bundle);
 
             global::Xamarin.Forms.Forms.Init(this, bundle);
+
+            // Plugin initialization here
+            Xamarin.FormsMaps.Init(this, bundle);
+
             LoadApplication(new App());
         }
     }

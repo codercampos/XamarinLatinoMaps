@@ -21,6 +21,9 @@ namespace XamarinLatinoMaps.UWP
         {
             this.InitializeComponent();
 
+            // Plugin initialization here
+            Xamarin.FormsMaps.Init("fugTOjzqZ4SnhpyODgwS~EicHDmhjc-1-qFFRcnRLag~AubgjSbPJ-WHHW2Q2sFpREnx0TE0hcqOkwJUX01WFdxDEFeUDD2TAF0CQqtEb0jf");
+
             LoadApplication(new XamarinLatinoMaps.App());
         }
     }
