@@ -2,10 +2,7 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinLatinoMaps"
+             xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
              x:Class="XamarinLatinoMaps.MainPage">
-
-	<Label Text="Welcome to Xamarin.Forms!" 
-           VerticalOptions="Center" 
-           HorizontalOptions="Center" />
-
+    <maps:Map HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
 </ContentPage>
