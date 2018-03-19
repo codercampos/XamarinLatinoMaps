@@ -23,6 +23,10 @@ namespace XamarinLatinoMaps.iOS
         public override bool FinishedLaunching(UIApplication app, NSDictionary options)
         {
             global::Xamarin.Forms.Forms.Init();
+
+            // Plugin initialization here
+            Xamarin.FormsMaps.Init();
+
             LoadApplication(new App());
 
             return base.FinishedLaunching(app, options);
