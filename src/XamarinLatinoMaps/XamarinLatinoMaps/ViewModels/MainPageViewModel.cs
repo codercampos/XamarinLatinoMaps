@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using XamarinLatinoMaps.Annotations;
 using XamarinLatinoMaps.Models;
 
 namespace XamarinLatinoMaps.ViewModels
@@ -62,8 +61,7 @@ namespace XamarinLatinoMaps.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
+        private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
