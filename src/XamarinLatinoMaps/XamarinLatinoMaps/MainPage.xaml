@@ -2,11 +2,20 @@
 <ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:XamarinLatinoMaps"
+             xmlns:viewmodels="clr-namespace:XamarinLatinoMaps.ViewModels;assembly=XamarinLatinoMaps"
              xmlns:maps="clr-namespace:Xamarin.Forms.Maps;assembly=Xamarin.Forms.Maps"
+             xmlns:behaviors="clr-namespace:XamarinLatinoMaps.Framework.Behaviors;assembly=XamarinLatinoMaps"
              x:Class="XamarinLatinoMaps.MainPage">
+    <ContentPage.BindingContext>
+        <viewmodels:MainPageViewModel></viewmodels:MainPageViewModel>
+    </ContentPage.BindingContext>
     <StackLayout>
-        <maps:Map x:Name="MapView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" />
-        <StackLayout Spacing="15" Padding="20" Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="FillAndExpand">
+        <maps:Map x:Name="MapView" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+            <maps:Map.Behaviors>
+                <behaviors:MapBehavior ItemsSource="{Binding Items}"></behaviors:MapBehavior>
+            </maps:Map.Behaviors>
+        </maps:Map>
+            <StackLayout Spacing="15" Padding="20" Orientation="Horizontal" VerticalOptions="End" HorizontalOptions="FillAndExpand">
             <Button HorizontalOptions="EndAndExpand" VerticalOptions="Center" HeightRequest="50" Text="Street" Clicked="Street_OnClicked" />
             <Button HorizontalOptions="Center" VerticalOptions="Center" HeightRequest="50" Text="Hybrid" Clicked="Hybrid_OnClicked" />
             <Button HorizontalOptions="StartAndExpand" VerticalOptions="Center" HeightRequest="50" Text="Satellite" Clicked="Satellite_OnClicked" />
