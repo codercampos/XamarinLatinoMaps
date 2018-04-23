@@ -90,6 +90,7 @@
   <ItemGroup>
     <Compile Include="Main.cs" />
     <Compile Include="AppDelegate.cs" />
+    <Compile Include="Renderers\CustomMapRenderer.cs" />
     <None Include="Entitlements.plist" />
     <None Include="Info.plist" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -130,5 +131,8 @@
       <Project>{45230ED3-0393-4D0A-A32B-CC52654E81F2}</Project>
       <Name>XamarinLatinoMaps</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <BundleResource Include="Resources\ic_coffee_bean.png" />
   </ItemGroup>
 </Project>
