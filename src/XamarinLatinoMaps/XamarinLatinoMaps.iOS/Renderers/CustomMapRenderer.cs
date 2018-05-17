@@ -5,6 +5,7 @@ using System.Text;
 using CoreGraphics;
 using Foundation;
 using MapKit;
+using ObjCRuntime;
 using UIKit;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
@@ -20,6 +21,7 @@ namespace XamarinLatinoMaps.iOS.Renderers
     {
         private UIView customPinView;
         private List<Pin> pins;
+		object _lastTouchedView;
 
         protected override void OnElementChanged(ElementChangedEventArgs<View> e)
         {
@@ -39,7 +41,8 @@ namespace XamarinLatinoMaps.iOS.Renderers
 
             if (e.NewElement != null)
             {
-                    // Subscribe to events and configure the native control to be used
+				// Subscribe to events and configure the native control to be used
+				_lastTouchedView = null;
                 var formsMap = (CustomMap)e.NewElement;
                 var nativeMap = Control as MKMapView;
                 pins = formsMap.Pins.ToList();
@@ -75,9 +78,76 @@ namespace XamarinLatinoMaps.iOS.Renderers
                 annotationView.CalloutOffset = new CGPoint(0, 0);
                 ((CustomMKAnnotationView)annotationView).Id = customPin.Id.ToString();
             }
-            annotationView.CanShowCallout = true;
+			annotationView.Annotation = annotation;
+			annotationView.CanShowCallout = true;
+			AttachGestureToPin(annotationView, annotation);
 
             return annotationView;
+        }
+
+
+		protected void AttachGestureToPin(MKAnnotationView mapPin, IMKAnnotation annotation)
+        {
+            var recognizers = mapPin.GestureRecognizers;
+
+            if (recognizers != null)
+            {
+                foreach (var r in recognizers)
+                {
+                    mapPin.RemoveGestureRecognizer(r);
+                }
+            }
+
+#if __MOBILE__
+            var recognizer = new UITapGestureRecognizer(g => OnClick(annotation, g))
+            {
+                ShouldReceiveTouch = (gestureRecognizer, touch) =>
+                {
+                    _lastTouchedView = touch.View;
+                    return true;
+                }
+            };
+#else
+            var recognizer = new NSClickGestureRecognizer(g => OnClick(annotation, g));
+#endif
+            mapPin.AddGestureRecognizer(recognizer);
+        }
+
+
+
+#if __MOBILE__
+            void OnClick(object annotationObject, UITapGestureRecognizer recognizer)
+#else
+            void OnClick(object annotationObject, NSClickGestureRecognizer recognizer)
+#endif
+            {
+            // https://bugzilla.xamarin.com/show_bug.cgi?id=26416
+            NSObject annotation = Runtime.GetNSObject(((IMKAnnotation)annotationObject).Handle);
+            if (annotation == null)
+                return;
+
+            // lookup pin
+            Pin targetPin = null;
+            foreach (Pin pin in ((Map)Element).Pins)
+            {
+                object target = pin.Id;
+                if (target != annotation)
+                    continue;
+
+                targetPin = pin;
+                break;
+            }
+
+            // pin not found. Must have been activated outside of forms
+            if (targetPin == null)
+                return;
+
+            // if the tap happened on the annotation view itself, skip because this is what happens when the callout is showing
+            // when the callout is already visible the tap comes in on a different view
+            if (_lastTouchedView is MKAnnotationView)
+                return;
+
+            targetPin.SendTap();
         }
 
         void OnCalloutAccessoryControlTapped(object sender, MKMapViewAccessoryTappedEventArgs e)

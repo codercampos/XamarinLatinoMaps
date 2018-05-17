@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Maps;
 using XamarinLatinoMaps.Models;
@@ -17,6 +18,15 @@ namespace XamarinLatinoMaps.Framework.Behaviors
             get => (IEnumerable<CoffeeShop>)GetValue(ItemsSourceProperty);
             set => SetValue(ItemsSourceProperty, value);
         }
+
+		public static readonly BindableProperty CommandProperty =
+			BindableProperty.Create("Command", typeof(ICommand), typeof(MapBehavior), null);
+
+		public ICommand Command 
+		{
+			get => (ICommand)GetValue(CommandProperty);
+			set => SetValue(CommandProperty, value);
+		}
 
         private static void ItemsSourceChanged(BindableObject bindable, object oldValue, object newValue)
         {
@@ -57,7 +67,7 @@ namespace XamarinLatinoMaps.Framework.Behaviors
             if (pin == null) return;
             var viewModel = ItemsSource.FirstOrDefault(x => x.Name == pin.Label);
             if (viewModel == null) return;
-            //viewModel.Command.Execute(null); // TODO We are going to implement this later ;)
+			Command?.Execute(null);
         }
     }
 }

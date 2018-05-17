@@ -13,7 +13,7 @@ namespace XamarinLatinoMaps
 		{
 			InitializeComponent();
 
-			MainPage = new XamarinLatinoMaps.MainPage();
+			MainPage = new NavigationPage(new MainPage());
 		}
 
 		protected override void OnStart ()

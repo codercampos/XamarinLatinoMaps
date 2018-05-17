@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows.Input;
+using Xamarin.Forms;
 using XamarinLatinoMaps.Models;
 
 namespace XamarinLatinoMaps.ViewModels
@@ -8,6 +10,8 @@ namespace XamarinLatinoMaps.ViewModels
     public class MainPageViewModel : INotifyPropertyChanged
     {
         private List<CoffeeShop> _items;
+
+        public ICommand PinTappedCommand { get; private set; }
 
         public List<CoffeeShop> Items
         {
@@ -21,7 +25,8 @@ namespace XamarinLatinoMaps.ViewModels
 
         public MainPageViewModel()
         {
-            Init();
+			PinTappedCommand = new Command(() => Application.Current.MainPage.Navigation.PushAsync(new Page()));
+            Init();         
         }
 
         private void Init()
